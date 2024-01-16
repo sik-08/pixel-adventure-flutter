@@ -32,9 +32,11 @@ class PixelAdventure extends FlameGame
     );
 
     cam = CameraComponent.withFixedResolution(
-        world: world, width: 640, height: 360);
+        world: world, width: 640, height: 360)
+      ..priority = 0
+      ..viewfinder.anchor = Anchor.topLeft;
 
-    cam.viewfinder.anchor = Anchor.topLeft;
+    // cam.viewfinder.anchor = Anchor.topLeft;
 
     addAll([cam, world]);
 
@@ -56,6 +58,7 @@ class PixelAdventure extends FlameGame
 
   void addJoystick() {
     joystick = JoystickComponent(
+      priority: 1,
       knob: SpriteComponent(
         sprite: Sprite(
           images.fromCache('HUD/Knob.png'),
