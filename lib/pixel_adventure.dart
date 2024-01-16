@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/material.dart';
 import 'package:pixel_adventure/actors/player.dart';
 import 'package:pixel_adventure/levels/level.dart';
 
@@ -16,6 +16,9 @@ class PixelAdventure extends FlameGame
   late final CameraComponent cam;
   Player player = Player();
   late JoystickComponent joystick;
+
+  // 조이스틱을 사용하는 경우, 키보드 조작은 안됨.
+  bool showJoystick = true;
 
   @override
   FutureOr<void> onLoad() async {
@@ -34,22 +37,60 @@ class PixelAdventure extends FlameGame
     cam.viewfinder.anchor = Anchor.topLeft;
 
     addAll([cam, world]);
-    addJoystick();
+
+    if (showJoystick) {
+      addJoystick();
+    }
+
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    if (showJoystick) {
+      updateJoystick();
+    }
+
+    super.update(dt);
   }
 
   void addJoystick() {
     joystick = JoystickComponent(
       knob: SpriteComponent(
         sprite: Sprite(
-          images.fromCache(('HUD/Knob.png')),
+          images.fromCache('HUD/Knob.png'),
         ),
       ),
       background: SpriteComponent(
         sprite: Sprite(
-          images.fromCache('HUD/Joystick'),
+          images.fromCache('HUD/Joystick.png'),
         ),
       ),
+      margin: const EdgeInsets.only(
+        left: 32,
+        bottom: 32,
+      ),
     );
+    add(joystick);
+  }
+
+  void updateJoystick() {
+    switch (joystick.direction) {
+      case JoystickDirection.left:
+      case JoystickDirection.upLeft:
+      case JoystickDirection.downLeft:
+        player.playerDirection = PlayerDirection.left;
+        break;
+
+      case JoystickDirection.right:
+      case JoystickDirection.upRight:
+      case JoystickDirection.downRight:
+        player.playerDirection = PlayerDirection.right;
+        break;
+
+      default:
+        player.playerDirection = PlayerDirection.none;
+        break;
+    }
   }
 }
