@@ -1,12 +1,14 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
+import 'package:pixel_adventure/components/player_hitbox.dart';
 import 'package:pixel_adventure/components/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
-enum PlayerState { idle, running }
+enum PlayerState { idle, running, jumping, falling }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<PixelAdventure>, KeyboardHandler {
@@ -17,23 +19,35 @@ class Player extends SpriteAnimationGroupComponent
 
   late String character;
   late final SpriteAnimation idleAnimation;
+  late final SpriteAnimation jumpingAnimation;
+  late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation runningAnimation;
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 250;
-  final double _terminalVelocity = 450;
+  final double _jumpForce = 240;
+  final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
   bool hasJumped = false;
   List<CollisionBlock> collisionBlocks = [];
+  PlayerHitbox hitbox = PlayerHitbox(
+    offsetX: 10,
+    offsetY: 4,
+    width: 14,
+    height: 28,
+  );
 
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     debugMode = true;
+    add(RectangleHitbox(
+      position: Vector2(hitbox.offsetX, hitbox.offsetY),
+      size: Vector2(hitbox.width, hitbox.height),
+    ));
     return super.onLoad();
   }
 
@@ -65,20 +79,17 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _loadAllAnimations() {
-    idleAnimation = _spriteAnimation(
-      state: 'Idle',
-      amount: 11,
-    );
-
-    runningAnimation = _spriteAnimation(
-      state: 'Run',
-      amount: 12,
-    );
+    idleAnimation = _spriteAnimation(state: 'Idle', amount: 11);
+    runningAnimation = _spriteAnimation(state: 'Run', amount: 12);
+    jumpingAnimation = _spriteAnimation(state: 'Jump', amount: 1);
+    fallingAnimation = _spriteAnimation(state: 'Fall', amount: 1);
 
     // List of all animations
     animations = {
       PlayerState.idle: idleAnimation,
       PlayerState.running: runningAnimation,
+      PlayerState.jumping: jumpingAnimation,
+      PlayerState.falling: fallingAnimation,
     };
 
     // Set current animation
@@ -111,6 +122,12 @@ class Player extends SpriteAnimationGroupComponent
     // check if moving, set running
     if (velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;
 
+    // check if falling set to falling
+    if (velocity.y > 0) playerState = PlayerState.falling;
+
+    // check if jumping, set to jumping
+    if (velocity.y < 0) playerState = PlayerState.jumping;
+
     current = playerState;
   }
 
@@ -137,12 +154,12 @@ class Player extends SpriteAnimationGroupComponent
         if (checkCollision(this, block)) {
           if (velocity.x > 0) {
             velocity.x = 0;
-            position.x = block.x - width;
+            position.x = block.x - hitbox.offsetX - hitbox.width;
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
-            position.x = block.x + block.width + width;
+            position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
             break;
           }
         }
@@ -162,7 +179,7 @@ class Player extends SpriteAnimationGroupComponent
         if (checkCollision(this, block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - height;
+            position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
             break;
           }
@@ -171,13 +188,13 @@ class Player extends SpriteAnimationGroupComponent
         if (checkCollision(this, block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - height;
+            position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
             break;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
-            position.y = block.y + block.height;
+            position.y = block.y + block.height - hitbox.offsetY;
           }
         }
       }
