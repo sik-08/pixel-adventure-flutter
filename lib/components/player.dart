@@ -148,6 +148,7 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = false;
   }
 
+  //TODO 버그 수정하기
   void _checkHorizontalCollisions() {
     for (final block in collisionBlocks) {
       if (!block.isPlatform) {
