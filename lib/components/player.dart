@@ -148,7 +148,8 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = false;
   }
 
-  //TODO 버그 수정하기
+  // TODO 버그 수정하기
+  //! 좌, 우로 이동하며 블럭 상단에 부딪혔을 때 옆으로 빠져나옴
   void _checkHorizontalCollisions() {
     for (final block in collisionBlocks) {
       if (!block.isPlatform) {
