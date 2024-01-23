@@ -148,8 +148,6 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = false;
   }
 
-  // TODO 버그 수정하기
-  //! 좌, 우로 이동하며 블럭 상단에 부딪혔을 때 옆으로 빠져나옴
   void _checkHorizontalCollisions() {
     for (final block in collisionBlocks) {
       if (!block.isPlatform) {
@@ -157,13 +155,11 @@ class Player extends SpriteAnimationGroupComponent
           if (velocity.x > 0) {
             velocity.x = 0;
             position.x = block.x - hitbox.offsetX - hitbox.width;
-            print('1');
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
             position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
-            print('2');
             break;
           }
         }
@@ -185,7 +181,6 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
-            print('3');
             break;
           }
         }
@@ -195,13 +190,12 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
-            print('4');
             break;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
             position.y = block.y + block.height - hitbox.offsetY;
-            print('5');
+            break;
           }
         }
       }
