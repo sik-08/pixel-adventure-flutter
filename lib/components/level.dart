@@ -44,7 +44,6 @@ class Level extends World {
             );
             collisionBlocks.add(platform);
             add(platform);
-
             break;
           default:
             final block = CollisionBlock(
@@ -54,6 +53,7 @@ class Level extends World {
             );
             collisionBlocks.add(block);
             add(block);
+            break;
         }
       }
     }
