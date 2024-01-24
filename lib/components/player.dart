@@ -164,13 +164,11 @@ class Player extends SpriteAnimationGroupComponent
           if (velocity.x > 0) {
             velocity.x = 0;
             position.x = block.x - hitbox.offsetX - hitbox.width;
-            print('velocity.x > 0');
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
             position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
-            print('velocity.x < 0');
             break;
           }
         }
@@ -192,7 +190,6 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
-            print('velocity.y > 0 isPlatform');
             break;
           }
         }
@@ -202,7 +199,6 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
-            print('velocity.y > 0');
             break;
           }
           if (velocity.y < 0) {
