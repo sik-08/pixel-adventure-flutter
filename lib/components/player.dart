@@ -4,14 +4,15 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
-import 'package:pixel_adventure/components/player_hitbox.dart';
+import 'package:pixel_adventure/components/custom_hitbox.dart';
+import 'package:pixel_adventure/components/fruits.dart';
 import 'package:pixel_adventure/components/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 enum PlayerState { idle, running, jumping, falling }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<PixelAdventure>, KeyboardHandler {
+    with HasGameRef<PixelAdventure>, KeyboardHandler, CollisionCallbacks {
   Player({
     super.position,
     this.character = 'Pink Man',
@@ -25,15 +26,15 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 265;
-  final double _terminalVelocity = 300;
+  final double _jumpForce = 240;
+  final double _terminalVelocity = 360;
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
   bool hasJumped = false;
   List<CollisionBlock> collisionBlocks = [];
-  PlayerHitbox hitbox = PlayerHitbox(
+  CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
     offsetY: 4,
     width: 14,
@@ -43,7 +44,7 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    debugMode = true;
+    // debugMode = true;
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
@@ -77,6 +78,13 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Fruit) other.collidedWithPlayer();
+
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -149,8 +157,6 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = false;
   }
 
-  // TODO 버그 수정하기
-  //! 좌, 우로 이동하며 블럭 상단에 부딪혔을 때 옆으로 빠져나옴
   void _checkHorizontalCollisions() {
     for (final block in collisionBlocks) {
       if (!block.isPlatform) {
@@ -202,7 +208,6 @@ class Player extends SpriteAnimationGroupComponent
           if (velocity.y < 0) {
             velocity.y = 0;
             position.y = block.y + block.height - hitbox.offsetY;
-            print('velocity.y < 0');
             break;
           }
         }

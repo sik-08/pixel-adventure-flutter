@@ -9,7 +9,7 @@ import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/level.dart';
 
 class PixelAdventure extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks {
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   @override
   Color backgroundColor() => const Color(0xFF211F30);
 
@@ -35,8 +35,6 @@ class PixelAdventure extends FlameGame
         world: world, width: 640, height: 360)
       ..priority = 0
       ..viewfinder.anchor = Anchor.topLeft;
-
-    // cam.viewfinder.anchor = Anchor.topLeft;
 
     addAll([cam, world]);
 
