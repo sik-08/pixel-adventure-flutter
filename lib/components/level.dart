@@ -44,8 +44,8 @@ class Level extends World {
             );
             collisionBlocks.add(platform);
             add(platform);
-
             break;
+
           default:
             final block = CollisionBlock(
               position: Vector2(collision.x, collision.y),
@@ -54,6 +54,7 @@ class Level extends World {
             );
             collisionBlocks.add(block);
             add(block);
+            break;
         }
       }
     }

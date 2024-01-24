@@ -25,7 +25,7 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 255;
+  final double _jumpForce = 265;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -58,6 +58,7 @@ class Player extends SpriteAnimationGroupComponent
     _checkHorizontalCollisions();
     _applyGravity(dt);
     _checkVerticalCollisions();
+
     super.update(dt);
   }
 
@@ -157,11 +158,13 @@ class Player extends SpriteAnimationGroupComponent
           if (velocity.x > 0) {
             velocity.x = 0;
             position.x = block.x - hitbox.offsetX - hitbox.width;
+            print('velocity.x > 0');
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
             position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
+            print('velocity.x < 0');
             break;
           }
         }
@@ -183,6 +186,7 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
+            print('velocity.y > 0 isPlatform');
             break;
           }
         }
@@ -192,11 +196,14 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
+            print('velocity.y > 0');
             break;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
             position.y = block.y + block.height - hitbox.offsetY;
+            print('velocity.y < 0');
+            break;
           }
         }
       }
