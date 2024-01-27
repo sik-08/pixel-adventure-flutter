@@ -28,6 +28,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
     return super.onLoad();
   }
 
+  //TODO 왜 6개 단위로 반복되지않는지 파악하기
   void _scrollingBackground() {
     final backgroundLayer = level.tileMap.getLayer('Background');
     const tileSize = 64;
