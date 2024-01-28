@@ -33,8 +33,8 @@ class Level extends World with HasGameRef<PixelAdventure> {
     final backgroundLayer = level.tileMap.getLayer('Background');
     const tileSize = 64;
 
-    final numTilesX = (game.size.x / tileSize).floor();
-    final numTilesY = (game.size.y / tileSize).floor();
+    final numTilesX = (game.size.x / tileSize).floor(); // 640 / 64 = 10
+    final numTilesY = (game.size.y / tileSize).floor(); // 368 / 64 = 5.x = 5
 
     if (backgroundLayer != null) {
       final backgroundColor =
