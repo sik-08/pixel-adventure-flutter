@@ -29,6 +29,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   }
 
   //TODO 왜 6개 단위로 반복되지않는지 파악하기
+  // 타일 배경 로드
   void _scrollingBackground() {
     final backgroundLayer = level.tileMap.getLayer('Background');
     const tileSize = 64;
@@ -53,6 +54,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
     }
   }
 
+  // 오브젝트 로드
   void _spawningObjects() {
     final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>('SpawnPoints');
 
@@ -76,6 +78,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
     }
   }
 
+  // 충돌 로드
   void _addCollisions() {
     final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
 
