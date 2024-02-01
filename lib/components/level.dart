@@ -41,7 +41,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
       final backgroundColor =
           backgroundLayer.properties.getValue('BackgroundColor');
 
-      // y는 하나만큼 초과 꽉채워야해서
+      // y는 하나만큼 초과, 꽉채워야해서
       for (double y = 0; y < numTilesY + 1; y++) {
         for (double x = 0; x < numTilesX; x++) {
           final backgroundTile = BackgroundTile(
