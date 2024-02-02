@@ -26,7 +26,7 @@ class BackgroundTile extends SpriteComponent with HasGameRef<PixelAdventure> {
     double tileSize = 64;
     int scrollHeight = (game.size.y / tileSize).floor();
 
-    if (position.y > scrollHeight * tileSize) position.y = -tileSize + 0.6;
+    if (position.y > scrollHeight * tileSize) position.y = -tileSize; // + 0.6;
     super.update(dt);
   }
 }
