@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="38">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="46">
  <properties>
   <property name="BackgroundColor" value="Purple"/>
  </properties>
@@ -35,7 +35,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="SpawnPoints">
-  <object id="2" name="Player" type="Player" x="96" y="224" width="32" height="32"/>
+  <object id="2" name="Player" type="Player" x="96" y="208" width="32" height="32"/>
   <object id="19" name="Bananas" type="Fruit" x="80" y="80" width="32" height="32"/>
   <object id="20" name="Cherries" type="Fruit" x="96" y="128" width="32" height="32"/>
   <object id="21" name="Kiwi" type="Fruit" x="192" y="128" width="32" height="32"/>
@@ -64,6 +64,14 @@
     <property name="offsetPositive" type="float" value="3"/>
    </properties>
   </object>
+  <object id="38" name="Kiwi" type="Fruit" x="160" y="256" width="32" height="32"/>
+  <object id="39" name="Strawberry" type="Fruit" x="208" y="256" width="32" height="32"/>
+  <object id="40" name="Melon" type="Fruit" x="256" y="256" width="32" height="32"/>
+  <object id="41" name="Orange" type="Fruit" x="304" y="256" width="32" height="32"/>
+  <object id="42" name="Pineapple" type="Fruit" x="352" y="256" width="32" height="32"/>
+  <object id="43" name="Kiwi" type="Fruit" x="416" y="192" width="32" height="32"/>
+  <object id="44" name="Kiwi" type="Fruit" x="400" y="224" width="32" height="32"/>
+  <object id="45" name="Kiwi" type="Fruit" x="432" y="224" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="4" type="Platform" x="64" y="112" width="48" height="16"/>

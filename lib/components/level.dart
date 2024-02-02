@@ -80,9 +80,17 @@ class Level extends World with HasGameRef<PixelAdventure> {
 
             break;
           case 'Saw':
+            final isVertical = spawnPoint.properties.getValue('isVertical');
+            final offsetNegative =
+                spawnPoint.properties.getValue('offsetNegative');
+            final offsetPositive =
+                spawnPoint.properties.getValue('offsetPositive');
             final saw = Saw(
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
+              isVertical: isVertical,
+              offsetNegative: offsetNegative,
+              offsetPositive: offsetPositive,
             );
             add(saw);
             break;
