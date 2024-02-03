@@ -38,7 +38,7 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 240;
+  final double _jumpForce = 245;
   final double _terminalVelocity = 360;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -270,6 +270,7 @@ class Player extends SpriteAnimationGroupComponent
         position = startingPosition;
 
         _updatePlayerState();
+        //gotHit = false;
         Future.delayed(canMoveDuration, () => gotHit = false);
       });
     });
