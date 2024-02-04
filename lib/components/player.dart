@@ -271,6 +271,7 @@ class Player extends SpriteAnimationGroupComponent
 
         _updatePlayerState();
         //gotHit = false;
+        // 이 부분 때문에 착지 지연
         Future.delayed(canMoveDuration, () => gotHit = false);
       });
     });
