@@ -192,6 +192,7 @@ class Player extends SpriteAnimationGroupComponent
     position.x += velocity.x * dt;
   }
 
+  //? 노트북과 데스크톱의 점프량이 다른 문제 발생
   void _playerJump(double dt) {
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
