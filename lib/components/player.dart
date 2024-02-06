@@ -254,7 +254,7 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
-  //TODO 리스폰 시 바로 착지하지 않는 버그 수정
+  //TODO 공중에서 리스폰 시 바로 착지하지 않는 버그 수정
   void _respawn() {
     const hitDuration = Duration(milliseconds: 350);
     const appearingDuration = Duration(milliseconds: 350);
