@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
 void main() async {
+  // 필수
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();
