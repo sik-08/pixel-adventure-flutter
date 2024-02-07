@@ -18,7 +18,7 @@ class PixelAdventure extends FlameGame
   late JoystickComponent joystick;
 
   // 조이스틱을 사용하는 경우, 키보드 조작은 안됨.
-  bool showJoystick = false;
+  bool showJoystick = true;
 
   @override
   FutureOr<void> onLoad() async {
