@@ -39,8 +39,8 @@ class Player extends SpriteAnimationGroupComponent
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 245;
-  final double _terminalVelocity = 360;
+  final double _jumpForce = 260;
+  final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
   Vector2 startingPosition = Vector2.zero();
@@ -104,9 +104,11 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Fruit) other.collidedWithPlayer();
-    if (other is Saw) _respawn();
-    if (other is Checkpoint && !reachedCheckpoint) _reachedCheckpoint();
+    if (!reachedCheckpoint) {
+      if (other is Fruit) other.collidedWithPlayer();
+      if (other is Saw) _respawn();
+      if (other is Checkpoint && !reachedCheckpoint) _reachedCheckpoint();
+    }
     super.onCollision(intersectionPoints, other);
   }
 
@@ -290,5 +292,16 @@ class Player extends SpriteAnimationGroupComponent
     }
 
     current = PlayerState.disappearing;
+
+    const reachedCheckpointDuration = Duration(milliseconds: 350);
+    Future.delayed(reachedCheckpointDuration, () {
+      reachedCheckpoint = false;
+      position = Vector2.all(-640);
+
+      const waitToChangeDuration = Duration(seconds: 3);
+      Future.delayed(waitToChangeDuration, () {
+        game.loadNextLevel();
+      });
+    });
   }
 }

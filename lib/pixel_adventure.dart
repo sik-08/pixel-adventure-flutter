@@ -13,30 +13,22 @@ class PixelAdventure extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF211F30);
 
-  late final CameraComponent cam;
+  late CameraComponent cam;
   Player player = Player();
   late JoystickComponent joystick;
 
   // 조이스틱을 사용하는 경우, 키보드 조작은 안됨.
   bool showJoystick = false;
 
+  List<String> levelNames = ['Level-01', 'Level-02'];
+  int currentLevelIndex = 0;
+
   @override
   FutureOr<void> onLoad() async {
     // Load all images into cache
     await images.loadAllImages();
 
-    @override
-    final world = Level(
-      levelName: 'Level-01',
-      player: player,
-    );
-
-    cam = CameraComponent.withFixedResolution(
-        world: world, width: 640, height: 360)
-      ..priority = -1
-      ..viewfinder.anchor = Anchor.topLeft;
-
-    addAll([cam, world]);
+    _loadLevel();
 
     if (showJoystick) {
       addJoystick();
@@ -93,5 +85,31 @@ class PixelAdventure extends FlameGame
         player.horizontalMovement = 0;
         break;
     }
+  }
+
+  void loadNextLevel() {
+    removeWhere((component) => component is Level);
+
+    if (currentLevelIndex < levelNames.length - 1) {
+      currentLevelIndex++;
+      _loadLevel();
+    }
+  }
+
+  void _loadLevel() {
+    Future.delayed(const Duration(seconds: 1), () {
+      @override
+      Level world = Level(
+        levelName: levelNames[currentLevelIndex],
+        player: player,
+      );
+
+      cam = CameraComponent.withFixedResolution(
+          world: world, width: 640, height: 360)
+        ..priority = -1
+        ..viewfinder.anchor = Anchor.topLeft;
+
+      addAll([cam, world]);
+    });
   }
 }
