@@ -33,7 +33,7 @@ class Fruit extends SpriteAnimationComponent
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
-      collisionType: CollisionType.passive,
+      //collisionType: CollisionType.passive,
     ));
 
     animation = SpriteAnimation.fromFrameData(

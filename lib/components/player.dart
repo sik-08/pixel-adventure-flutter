@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/fruits.dart';
@@ -17,7 +18,7 @@ enum PlayerState {
   falling,
   hit,
   appearing,
-  desappearing,
+  disappearing,
 }
 
 class Player extends SpriteAnimationGroupComponent
@@ -34,7 +35,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
-  late final SpriteAnimation desappearingAnimation;
+  late final SpriteAnimation disappearingAnimation;
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
@@ -47,6 +48,7 @@ class Player extends SpriteAnimationGroupComponent
   bool isOnGround = false;
   bool hasJumped = false;
   bool gotHit = false;
+  bool reachedCheckpoint = false;
   List<CollisionBlock> collisionBlocks = [];
   CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
@@ -72,7 +74,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!gotHit) {
+    if (!gotHit && !reachedCheckpoint) {
       _updatePlayerState();
       _updatePlayerMovement(dt);
       _checkHorizontalCollisions();
@@ -104,7 +106,7 @@ class Player extends SpriteAnimationGroupComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fruit) other.collidedWithPlayer();
     if (other is Saw) _respawn();
-
+    if (other is Checkpoint && !reachedCheckpoint) _reachedCheckpoint();
     super.onCollision(intersectionPoints, other);
   }
 
@@ -115,7 +117,7 @@ class Player extends SpriteAnimationGroupComponent
     fallingAnimation = _spriteAnimation(state: 'Fall', amount: 1);
     hitAnimation = _spriteAnimation(state: 'Hit', amount: 7);
     appearingAnimation = _specialSpriteAnimation(state: 'Appearing', amount: 7);
-    desappearingAnimation =
+    disappearingAnimation =
         _specialSpriteAnimation(state: 'Desappearing', amount: 7);
 
     // List of all animations
@@ -126,7 +128,7 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
       PlayerState.hit: hitAnimation,
       PlayerState.appearing: appearingAnimation,
-      PlayerState.desappearing: desappearingAnimation,
+      PlayerState.disappearing: disappearingAnimation,
     };
 
     // Set current animation
@@ -276,5 +278,17 @@ class Player extends SpriteAnimationGroupComponent
         Future.delayed(canMoveDuration, () => gotHit = false);
       });
     });
+  }
+
+  void _reachedCheckpoint() {
+    reachedCheckpoint = true;
+
+    if (scale.x > 0) {
+      position = position - Vector2.all(32);
+    } else if (scale.x < 0) {
+      position = position + Vector2(32, -32);
+    }
+
+    current = PlayerState.disappearing;
   }
 }
