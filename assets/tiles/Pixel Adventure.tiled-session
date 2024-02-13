@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-01.tmx",
+    "activeFile": "Level-02.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -51,8 +51,8 @@
     "project": "Pixel Adventure.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "Level-02.tmx",
         "Level-01.tmx",
+        "Level-02.tmx",
         "Pixel Adventure.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
