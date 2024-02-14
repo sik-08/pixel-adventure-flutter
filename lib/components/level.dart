@@ -34,29 +34,19 @@ class Level extends World with HasGameRef<PixelAdventure> {
     return super.onLoad();
   }
 
-  //TODO 왜 6개 단위로 반복되지않는지 파악하기
   // 타일 배경 로드
   void _scrollingBackground() {
     final backgroundLayer = level.tileMap.getLayer('Background');
-    const tileSize = 64;
-
-    final numTilesX = (game.size.x / tileSize).floor(); // 640 / 64 = 10
-    final numTilesY = (game.size.y / tileSize).floor(); // 368 / 64 = 5.x = 5
 
     if (backgroundLayer != null) {
       final backgroundColor =
           backgroundLayer.properties.getValue('BackgroundColor');
+      final backgroundTile = BackgroundTile(
+        color: backgroundColor ?? 'Gray',
+        position: Vector2(0, 0),
+      );
 
-      // y는 하나만큼 초과, 꽉채워야해서
-      for (double y = 0; y < numTilesY + 1; y++) {
-        for (double x = 0; x < numTilesX; x++) {
-          final backgroundTile = BackgroundTile(
-            color: backgroundColor ?? 'Gray',
-            position: Vector2(x * tileSize, y * tileSize),
-          );
-          add(backgroundTile);
-        }
-      }
+      add(backgroundTile);
     }
   }
 
@@ -69,6 +59,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
         switch (spawnPoint.class_) {
           case 'Player':
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.scale.x = 1;
             add(player);
             break;
           case 'Fruit':

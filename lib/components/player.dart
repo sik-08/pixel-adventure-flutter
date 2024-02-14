@@ -57,6 +57,9 @@ class Player extends SpriteAnimationGroupComponent
     height: 28,
   );
 
+  double fixedDeltaTime = 1 / 60;
+  double accumulatedTime = 0;
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
@@ -74,12 +77,17 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    if (!gotHit && !reachedCheckpoint) {
-      _updatePlayerState();
-      _updatePlayerMovement(dt);
-      _checkHorizontalCollisions();
-      _applyGravity(dt);
-      _checkVerticalCollisions();
+    accumulatedTime += dt;
+
+    while (accumulatedTime >= fixedDeltaTime) {
+      if (!gotHit && !reachedCheckpoint) {
+        _updatePlayerState();
+        _updatePlayerMovement(fixedDeltaTime);
+        _checkHorizontalCollisions();
+        _applyGravity(fixedDeltaTime);
+        _checkVerticalCollisions();
+      }
+      accumulatedTime -= fixedDeltaTime;
     }
 
     super.update(dt);
@@ -103,13 +111,14 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
     if (!reachedCheckpoint) {
       if (other is Fruit) other.collidedWithPlayer();
       if (other is Saw) _respawn();
       if (other is Checkpoint && !reachedCheckpoint) _reachedCheckpoint();
     }
-    super.onCollision(intersectionPoints, other);
+    super.onCollisionStart(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -117,7 +126,7 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation(state: 'Run', amount: 12);
     jumpingAnimation = _spriteAnimation(state: 'Jump', amount: 1);
     fallingAnimation = _spriteAnimation(state: 'Fall', amount: 1);
-    hitAnimation = _spriteAnimation(state: 'Hit', amount: 7);
+    hitAnimation = _spriteAnimation(state: 'Hit', amount: 7)..loop = false;
     appearingAnimation = _specialSpriteAnimation(state: 'Appearing', amount: 7);
     disappearingAnimation =
         _specialSpriteAnimation(state: 'Desappearing', amount: 7);
@@ -161,6 +170,7 @@ class Player extends SpriteAnimationGroupComponent
         amount: amount,
         stepTime: stepTime,
         textureSize: Vector2.all(96),
+        loop: false,
       ),
     );
   }
@@ -258,28 +268,25 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
-  //TODO 공중에서 리스폰 시 바로 착지하지 않는 버그 수정
-  void _respawn() {
-    const hitDuration = Duration(milliseconds: 350);
-    const appearingDuration = Duration(milliseconds: 350);
+  void _respawn() async {
     const canMoveDuration = Duration(milliseconds: 400);
     gotHit = true;
     current = PlayerState.hit;
 
-    Future.delayed(hitDuration, () {
-      scale.x = 1;
-      position = startingPosition - Vector2.all(32); // 96 - 64
-      current = PlayerState.appearing;
-      Future.delayed(appearingDuration, () {
-        velocity = Vector2.zero();
-        position = startingPosition;
+    await animationTicker?.completed;
+    animationTicker?.reset();
 
-        _updatePlayerState();
-        //gotHit = false;
-        // 이 부분 때문에 착지 지연
-        Future.delayed(canMoveDuration, () => gotHit = false);
-      });
-    });
+    scale.x = 1;
+    position = startingPosition - Vector2.all(32); // 96 - 64
+    current = PlayerState.appearing;
+
+    await animationTicker?.completed;
+    animationTicker?.reset();
+
+    velocity = Vector2.zero();
+    position = startingPosition;
+    _updatePlayerState();
+    Future.delayed(canMoveDuration, () => gotHit = false);
   }
 
   void _reachedCheckpoint() {

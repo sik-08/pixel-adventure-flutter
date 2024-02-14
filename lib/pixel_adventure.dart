@@ -23,7 +23,7 @@ class PixelAdventure extends FlameGame
   late JoystickComponent joystick;
 
   // 조이스틱 및 점프버튼을 사용하는 경우, 키보드 조작은 안됨.
-  bool showControls = true;
+  bool showControls = false;
 
   List<String> levelNames = ['Level-01', 'Level-02'];
   int currentLevelIndex = 0;
