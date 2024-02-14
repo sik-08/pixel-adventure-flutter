@@ -5,11 +5,16 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:pixel_adventure/components/jump_button.dart';
 import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/level.dart';
 
 class PixelAdventure extends FlameGame
-    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
+    with
+        HasKeyboardHandlerComponents,
+        DragCallbacks,
+        HasCollisionDetection,
+        TapCallbacks {
   @override
   Color backgroundColor() => const Color(0xFF211F30);
 
@@ -17,8 +22,8 @@ class PixelAdventure extends FlameGame
   Player player = Player();
   late JoystickComponent joystick;
 
-  // 조이스틱을 사용하는 경우, 키보드 조작은 안됨.
-  bool showJoystick = false;
+  // 조이스틱 및 점프버튼을 사용하는 경우, 키보드 조작은 안됨.
+  bool showControls = true;
 
   List<String> levelNames = ['Level-01', 'Level-02'];
   int currentLevelIndex = 0;
@@ -30,8 +35,9 @@ class PixelAdventure extends FlameGame
 
     _loadLevel();
 
-    if (showJoystick) {
+    if (showControls) {
       addJoystick();
+      add(JumpButton());
     }
 
     return super.onLoad();
@@ -39,7 +45,7 @@ class PixelAdventure extends FlameGame
 
   @override
   void update(double dt) {
-    if (showJoystick) {
+    if (showControls) {
       updateJoystick();
     }
 
@@ -48,7 +54,7 @@ class PixelAdventure extends FlameGame
 
   void addJoystick() {
     joystick = JoystickComponent(
-      priority: -1,
+      priority: 10,
       knob: SpriteComponent(
         sprite: Sprite(
           images.fromCache('HUD/Knob.png'),
