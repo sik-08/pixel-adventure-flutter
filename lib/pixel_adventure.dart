@@ -24,6 +24,8 @@ class PixelAdventure extends FlameGame
 
   // 조이스틱 및 점프버튼을 사용하는 경우, 키보드 조작은 안됨.
   bool showControls = false;
+  bool playSounds = false;
+  double soundVolume = 1.0;
 
   List<String> levelNames = ['Level-01', 'Level-02'];
   int currentLevelIndex = 0;
@@ -103,19 +105,22 @@ class PixelAdventure extends FlameGame
   }
 
   void _loadLevel() {
-    Future.delayed(const Duration(seconds: 1), () {
-      @override
-      Level world = Level(
-        levelName: levelNames[currentLevelIndex],
-        player: player,
-      );
+    Future.delayed(
+      const Duration(seconds: 1),
+      () {
+        @override
+        Level world = Level(
+          levelName: levelNames[currentLevelIndex],
+          player: player,
+        );
 
-      cam = CameraComponent.withFixedResolution(
-          world: world, width: 640, height: 360)
-        ..priority = -1
-        ..viewfinder.anchor = Anchor.topLeft;
+        cam = CameraComponent.withFixedResolution(
+            world: world, width: 640, height: 360)
+          ..priority = -1
+          ..viewfinder.anchor = Anchor.topLeft;
 
-      addAll([cam, world]);
-    });
+        addAll([cam, world]);
+      },
+    );
   }
 }
