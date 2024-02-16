@@ -19,16 +19,13 @@ class PixelAdventure extends FlameGame
   Color backgroundColor() => const Color(0xFF211F30);
 
   late CameraComponent cam;
-  Player player = Player();
   late JoystickComponent joystick;
-
-  // 조이스틱 및 점프버튼을 사용하는 경우, 키보드 조작은 안됨.
-  bool showControls = false;
-  bool playSounds = false;
+  Player player = Player();
+  bool showControls = false; // 조이스틱, 점프버튼 사용 (모바일용)
+  bool playSounds = true; // 사운드 사용
   double soundVolume = 1.0;
-
-  List<String> levelNames = ['Level-01', 'Level-02'];
-  int currentLevelIndex = 0;
+  List<String> levelNames = ['Level-01', 'Level-02']; // 레벨 리스트
+  int currentLevelIndex = 0; // 현재 레벨 (Level-01)
 
   @override
   FutureOr<void> onLoad() async {
@@ -96,10 +93,14 @@ class PixelAdventure extends FlameGame
   }
 
   void loadNextLevel() {
+    // Level의 컴포넌트를 모두 삭제
     removeWhere((component) => component is Level);
 
     if (currentLevelIndex < levelNames.length - 1) {
       currentLevelIndex++;
+      _loadLevel();
+    } else {
+      currentLevelIndex = 0;
       _loadLevel();
     }
   }

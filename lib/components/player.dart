@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -207,6 +208,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    if (game.playSounds) {
+      FlameAudio.play(
+        'jump.wav',
+        volume: game.soundVolume,
+      );
+    }
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -268,6 +275,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _respawn() async {
+    if (game.playSounds) {
+      FlameAudio.play(
+        'hit.wav',
+        volume: game.soundVolume,
+      );
+    }
     const canMoveDuration = Duration(milliseconds: 400);
     gotHit = true;
     current = PlayerState.hit;
@@ -290,8 +303,13 @@ class Player extends SpriteAnimationGroupComponent
 
   void _reachedCheckpoint() async {
     reachedCheckpoint = true;
-
-    //? 이건 왜 해야하지
+    if (game.playSounds) {
+      FlameAudio.play(
+        'disappear.wav',
+        volume: game.soundVolume,
+      );
+    }
+    //? 깃발에 닿을 때 플레이어의 위치가 튕기는 원인을 모르겠음.
     if (scale.x > 0) {
       position = position - Vector2.all(32);
     } else if (scale.x < 0) {
