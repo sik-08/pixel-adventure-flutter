@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
+import 'package:pixel_adventure/components/chicken.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/fruits.dart';
@@ -64,7 +65,7 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    //! debugMode = true;
+    debugMode = false; //! 디버그 모드 설정
 
     /// 플레이어 초기 위치 (스폰 지점)
     startingPosition = Vector2(position.x, position.y);
@@ -117,7 +118,8 @@ class Player extends SpriteAnimationGroupComponent
     if (!reachedCheckpoint) {
       if (other is Fruit) other.collidedWithPlayer();
       if (other is Saw) _respawn();
-      if (other is Checkpoint && !reachedCheckpoint) _reachedCheckpoint();
+      if (other is Chicken) other.collidedWithPlayer();
+      if (other is Checkpoint) _reachedCheckpoint();
     }
     super.onCollisionStart(intersectionPoints, other);
   }
@@ -326,5 +328,9 @@ class Player extends SpriteAnimationGroupComponent
 
     const waitToChangeDuration = Duration(seconds: 3);
     Future.delayed(waitToChangeDuration, () => game.loadNextLevel());
+  }
+
+  void collidedWithEnemy() {
+    _respawn();
   }
 }
