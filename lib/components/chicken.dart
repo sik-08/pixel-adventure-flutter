@@ -19,7 +19,7 @@ class Chicken extends SpriteAnimationGroupComponent
   static const stepTime = 0.05;
   final textureSize = Vector2(32, 34);
   late final SpriteAnimation _idleAnimation;
-  late final SpriteAnimation _runningAnimation;
+  late final SpriteAnimation _runAnimation;
   late final SpriteAnimation _hitAnimation;
 
   @override
@@ -32,8 +32,16 @@ class Chicken extends SpriteAnimationGroupComponent
 
   void _loadAllAnimations() {
     _idleAnimation = _spriteAnimation(state: 'Idle', amount: 13);
-    //TODO animation추가
-    //_runningA
+    _runAnimation = _spriteAnimation(state: 'Run', amount: 14);
+    _hitAnimation = _spriteAnimation(state: 'Hit', amount: 5)..loop = false;
+
+    animations = {
+      State.idle: _idleAnimation,
+      State.run: _runAnimation,
+      State.hit: _hitAnimation,
+    };
+
+    current = State.idle;
   }
 
   SpriteAnimation _spriteAnimation(
