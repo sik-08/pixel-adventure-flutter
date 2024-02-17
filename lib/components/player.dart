@@ -77,6 +77,10 @@ class Player extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
+  /**
+   * 
+   */
+
   @override
   void update(double dt) {
     accumulatedTime += dt;
@@ -96,7 +100,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   @override
-  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalMovement = 0;
 
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||

@@ -11,20 +11,20 @@
     "fileStates": {
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
-            "scale": 1.571953125,
-            "selectedLayer": 1,
+            "scale": 0.8898,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 319.98409621788187,
-                "y": 180.66696486258135
+                "x": 301.19127893908745,
+                "y": 175.32029669588675
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 1.1424,
             "selectedLayer": 1,
@@ -39,22 +39,23 @@
         }
     },
     "last.imagePath": "C:/RECODE/pixel_adventure/assets/images/Terrain",
-    "map.height": 23,
+    "map.height": 17,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 40,
+    "map.width": 34,
     "openFiles": [
         "Level-01.tmx",
         "Level-02.tmx"
     ],
     "project": "Pixel Adventure.tiled-project",
-    "property.type": "float",
+    "property.type": "string",
     "recentFiles": [
         "Level-02.tmx",
         "Level-01.tmx",
         "Pixel Adventure.tsx"
     ],
+    "resizeMap.removeObjects": false,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 16,

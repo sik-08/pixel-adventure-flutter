@@ -21,7 +21,7 @@ class PixelAdventure extends FlameGame
   late CameraComponent cam;
   late JoystickComponent joystick;
   Player player = Player();
-  bool showControls = true; // 조이스틱, 점프버튼 사용 (모바일용)
+  bool showControls = false; // 조이스틱, 점프버튼 사용 (모바일용)
   bool playSounds = true; // 사운드 사용
   double soundVolume = 1.0;
   List<String> levelNames = ['Level-01', 'Level-02']; // 레벨 리스트
