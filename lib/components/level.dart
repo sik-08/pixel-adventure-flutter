@@ -18,12 +18,19 @@ class Level extends World with HasGameRef<PixelAdventure> {
   late TiledComponent level;
   List<CollisionBlock> collisionBlocks = [];
 
+  final fps = FpsTextComponent(
+    scale: Vector2.all(0.8),
+    anchor: Anchor.topLeft,
+  );
+
   /// 1. 'level'을 불러오는 동안 'await'에 의해 비동기 처리
   /// 2. 뒷배경 로드 ('level'보다 빠를 것이다. (추측))
   /// 3. 오브젝트, 충돌 로드
 
   @override
   FutureOr<void> onLoad() async {
+    //debugMode = true; //! 디버깅 모드 적용
+    add(fps);
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
     add(level);

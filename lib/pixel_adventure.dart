@@ -29,6 +29,7 @@ class PixelAdventure extends FlameGame
 
   @override
   FutureOr<void> onLoad() async {
+    //debugMode = true; //! 디버깅 모드 적용
     // Load all images into cache
     await images.loadAllImages();
 

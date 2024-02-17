@@ -77,9 +77,7 @@ class Player extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  /**
-   * 
-   */
+  ///
 
   @override
   void update(double dt) {
